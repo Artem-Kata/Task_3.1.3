@@ -3,7 +3,6 @@ package ru.kata.spring.boot_security.demo.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -100,30 +99,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User updateUser(User user, Set<Role> roles, Long id) {
         User oldUser = getOne(id);
-        String oldPassword = oldUser.getPassword();
+
+        // Обновление пароля
         String newPassword = user.getPassword();
-
-        if (newPassword != null && !newPassword.isEmpty() && !passwordEncoder.matches(newPassword, oldPassword)) {
-
+        if (newPassword != null && !newPassword.isEmpty() && !passwordEncoder.matches(newPassword, oldUser.getPassword())) {
             user.setPassword(passwordEncoder.encode(newPassword));
         } else {
-            user.setPassword(oldPassword);
+            user.setPassword(oldUser.getPassword());
         }
 
-        Set<Role> roleSet = new HashSet<>();
-
+        // Обновление ролей
         if (roles == null || roles.isEmpty()) {
-            roleSet = oldUser.getRoles();
+            user.setRoles(oldUser.getRoles());
         } else {
-            for (Role role : roles) {
-                Role newRole = role;
-                if (newRole != null) {
-                    roleSet.add(newRole);
-                }
-            }
+            user.setRoles(new HashSet<>(roles));
         }
 
-        user.setRoles(roleSet);
         return user;
     }
 }
