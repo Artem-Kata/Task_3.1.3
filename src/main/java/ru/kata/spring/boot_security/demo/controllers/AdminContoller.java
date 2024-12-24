@@ -13,8 +13,12 @@ import java.util.Set;
 @Controller
 @RequestMapping("/admin")
 public class AdminContoller {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
+
+    public AdminContoller(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public String admin(Model model) {

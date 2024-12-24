@@ -13,6 +13,7 @@ import ru.kata.spring.boot_security.demo.DAO.UserDao;
 import ru.kata.spring.boot_security.demo.Models.Role;
 import ru.kata.spring.boot_security.demo.Models.User;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -74,10 +75,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User oneUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userService = (UserDetails) authentication.getPrincipal();
-        return (User) authentication.getPrincipal();
+    public User oneUser(Principal principal) {
+        return (User) ((Authentication) principal).getPrincipal();
     }
 
     public Role getRole(String role) {
