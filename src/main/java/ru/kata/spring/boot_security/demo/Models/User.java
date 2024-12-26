@@ -22,6 +22,8 @@ public class User implements UserDetails {
 
     private Byte age;
 
+    private String email;
+
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -46,10 +48,11 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String lastName, Byte age, String password) {
+    public User(String username, String lastName, Byte age, String email, String password) {
         this.username = username;
         this.lastName = lastName;
         this.age = age;
+        this.email = email;
         this.password = password;
     }
 
@@ -77,6 +80,9 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
 
     public String getPassword() {
         return password;

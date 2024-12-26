@@ -30,6 +30,7 @@
         <th scope="col">Name</th>
         <th scope="col">LastName</th>
         <th scope="col">Age</th>
+        <th scope="col">Email</th>
         <th scope="col">Role</th>
         <th scope="col">Actions</th>
     </tr>
@@ -40,6 +41,7 @@
         <td th:text="${user.username}"/>
         <td th:text="${user.lastName}"/>
         <td th:text="${user.age}"/>
+        <td th:text="${user.email}"/>
         <td th:text="${user.getAllUserRoles()}"/>
         <td>
             <a th:href="@{/admin/edit(id=${user.id})}" class="button">Update</a>

@@ -22,8 +22,8 @@ public class InputUser {
         this.roleRepository = roleRepository;
     }
 
-    User admin = new User("admin", "adminov", (byte) 30, "$2a$12$Y03tCK62VmaaZLeWlU8cnelB.m/Y4LOMgnC24UpxsJzOv2UE/Uc0K");
-    User user = new User("user", "userov", (byte) 30, "$2a$12$oQKP9KHR5an3eHvvK2sGcOEW5Z0zomeLv2mopUN5DqOCJ7u5R9qCa");
+    User admin = new User("admin", "adminov", (byte) 30, "admin@mail.ru", "$2a$12$Y03tCK62VmaaZLeWlU8cnelB.m/Y4LOMgnC24UpxsJzOv2UE/Uc0K");
+    User user = new User("user", "userov", (byte) 30, "user@mail.ru", "$2a$12$oQKP9KHR5an3eHvvK2sGcOEW5Z0zomeLv2mopUN5DqOCJ7u5R9qCa");
 
     Role roleAdmin = new Role("ROLE_ADMIN");
     Role roleUser = new Role("ROLE_USER");
