@@ -21,7 +21,7 @@
     </style>
 </head>
 <body>
-<h1>Users</h1>
+<h1>User</h1>
 <br>
 <table class="table table-dark">
     <thead>
@@ -32,7 +32,6 @@
         <th scope="col">Age</th>
         <th scope="col">Email</th>
         <th scope="col">Role</th>
-        <th scope="col">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -43,19 +42,11 @@
         <td th:text="${user.age}"/>
         <td th:text="${user.email}"/>
         <td th:text="${user.getAllUserRoles()}"/>
-        <td>
-            <a th:href="@{/admin/edit(id=${user.id})}" class="button">Update</a>
-            <a th:href="@{/admin/delete(id=${user.id})}" class="button">Delete</a>
-        </td>
     </tr>
     </tbody>
 </table>
-
-<a href="/admin/new" class="button">Create new user</a>
-<br><br>
+<br>
 <a href="/logout" class="button">Logout</a>
-<br><br>
-<a href="/admin/user" class="button">User</a>
 
 </body>
 </html>

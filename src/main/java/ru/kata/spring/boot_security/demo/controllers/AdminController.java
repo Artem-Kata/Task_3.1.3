@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -8,15 +7,16 @@ import ru.kata.spring.boot_security.demo.Models.Role;
 import ru.kata.spring.boot_security.demo.Models.User;
 import ru.kata.spring.boot_security.demo.Services.UserService;
 
+import java.security.Principal;
 import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminContoller {
+public class AdminController {
 
     private final UserService userService;
 
-    public AdminContoller(UserService userService) {
+    public AdminController(UserService userService) {
         this.userService = userService;
     }
 
@@ -24,6 +24,12 @@ public class AdminContoller {
     public String admin(Model model) {
         model.addAttribute("user", userService.getAllUsers());
         return "users";
+    }
+
+    @GetMapping("/user")
+    public String user(Model model, Principal principal) {
+        model.addAttribute("user", userService.oneUser(principal));
+        return "oneAdmin";
     }
 
     @GetMapping(value = "/new")
