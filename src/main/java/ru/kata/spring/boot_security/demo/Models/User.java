@@ -42,7 +42,17 @@ public class User implements UserDetails {
     }
 
     public String getAllUserRoles() {
-        return roles.stream().map(Role::getRole).collect(Collectors.joining(", "));
+        return roles.stream()
+                .map(role -> {
+                    if (role.getRole().equals("ROLE_USER")) {
+                        return "USER";
+                    } else if (role.getRole().equals("ROLE_ADMIN")) {
+                        return "ADMIN";
+                    } else {
+                        return role.getRole();
+                    }
+                })
+                .collect(Collectors.joining(", "));
     }
 
     public User() {

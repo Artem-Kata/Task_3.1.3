@@ -21,8 +21,9 @@ public class AdminController {
     }
 
     @GetMapping
-    public String admin(Model model) {
+    public String admin(Model model, Principal principal) {
         model.addAttribute("user", userService.getAllUsers());
+        model.addAttribute("admin", userService.oneUser(principal));
         return "users";
     }
 
@@ -33,8 +34,9 @@ public class AdminController {
     }
 
     @GetMapping(value = "/new")
-    public String newUser(Model model) {
+    public String newUser(Model model, Principal principal) {
         model.addAttribute("user", new User());
+        model.addAttribute("admin", userService.oneUser(principal));
         return "newUser";
     }
 
@@ -48,12 +50,6 @@ public class AdminController {
     public String delete(@RequestParam("id") long id) {
         userService.delete(id);
         return "redirect:/admin";
-    }
-
-    @GetMapping(value = "/edit")
-    public String edit(@RequestParam(value = "id") long id, Model model) {
-        model.addAttribute("user", userService.getOne(id));
-        return "edit";
     }
 
     @PostMapping(value = "/update")
