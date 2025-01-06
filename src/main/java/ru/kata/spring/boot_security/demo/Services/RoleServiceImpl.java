@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.Services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.DAO.RoleDao;
 import ru.kata.spring.boot_security.demo.Models.Role;
 
@@ -14,7 +15,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional
     public Role findByName(String name) {
-        return null;
+        return roleDao.findByName(name);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.DAO.UserDao;
 import ru.kata.spring.boot_security.demo.Models.Role;
 import ru.kata.spring.boot_security.demo.Models.User;
@@ -23,17 +24,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
-    private final RoleService roleService;
 
     @Autowired
     @Lazy
-    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder, RoleService roleService) {
+    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
-        this.roleService = roleService;
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userDao.findByUsername(username);
         if (user.isEmpty()) {
@@ -43,26 +43,31 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public List<User> getAllUsers() {
         return userDao.findAll();
     }
 
     @Override
+    @Transactional
     public void save(User user) {
         userDao.save(user);
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         userDao.deleteById(id);
     }
 
     @Override
+    @Transactional
     public User getOne(Long id) {
         return userDao.findById(id).get();
     }
 
     @Override
+    @Transactional
     public void update(Long id, User user) {
         User oldUser = userDao.findById(id).get();
         oldUser.setUsername(user.getUsername());
@@ -75,15 +80,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public User oneUser(Principal principal) {
         return (User) ((Authentication) principal).getPrincipal();
     }
 
-    public Role getRole(String role) {
-        return roleService.findByName(role);
-    }
-
     @Override
+    @Transactional
     public User createUser(User user, Set<Role> roles) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Set<Role> roleSet = new HashSet<>();
@@ -98,10 +101,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public User updateUser(User user, Set<Role> roles, Long id) {
         User oldUser = getOne(id);
 
-        // Обновление пароля
         String newPassword = user.getPassword();
         if (newPassword != null && !newPassword.isEmpty() && !passwordEncoder.matches(newPassword, oldUser.getPassword())) {
             user.setPassword(passwordEncoder.encode(newPassword));
@@ -109,7 +112,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             user.setPassword(oldUser.getPassword());
         }
 
-        // Обновление ролей
         if (roles == null || roles.isEmpty()) {
             user.setRoles(oldUser.getRoles());
         } else {
